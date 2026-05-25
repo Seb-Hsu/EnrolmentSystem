@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using EnrolmentSystem.Model;
 using EnrolmentSystem.Service;
-using EnrolmentSystem.Model;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EnrolmentSystem.Controllers
 {
@@ -11,11 +10,11 @@ namespace EnrolmentSystem.Controllers
     {
         //GET: /Student
         [HttpGet("Student")]
-        public ActionResult<List<Student>> GetAllStudents()=> EnrolmentService.GetAllStudents();
+        public ActionResult<List<Student>> GetAllStudents() => EnrolmentService.GetAllStudents();
 
         //GET: /Course
         [HttpGet("Course")]
-        public ActionResult<List<Course>> GetAllCourses()=>EnrolmentService.GetAllCourses();
+        public ActionResult<List<Course>> GetAllCourses() => EnrolmentService.GetAllCourses();
 
         //Get: /Enrolment
         [HttpGet("Enrolment")]
@@ -27,6 +26,22 @@ namespace EnrolmentSystem.Controllers
         {
             EnrolmentService.AddStudent(s);
             return CreatedAtAction(nameof(GetAllStudents), s);
+        }
+
+        //POST: /Course
+        [HttpPost("Course")]
+        public IActionResult Create(Course c)
+        {
+            EnrolmentService.AddCourse(c);
+            return CreatedAtAction(nameof(GetAllCourses), c);
+        }
+
+        //POST: /Enrolment
+        [HttpPost("Enrolment")]
+        public IActionResult Create(Enrolment e)
+        {
+            EnrolmentService.AddEnrolment(e);
+            return CreatedAtAction(nameof(GetAllEnrolments), e);
         }
     }
 }
