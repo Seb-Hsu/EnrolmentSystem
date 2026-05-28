@@ -15,7 +15,7 @@ namespace EnrolmentSystem.Service
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=EnrolmentDB;Trusted_Connection=true;");
+            optionsBuilder.UseSqlServer("Server=tcp:clp2026s1.database.windows.net,1433;Initial Catalog=EnrolmentDB;Persist Security Info=False;User ID=seb;Password=Password1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         // Configure the model relationships and constraints
@@ -59,31 +59,31 @@ namespace EnrolmentSystem.Service
         static EnrolmentService()
         {
             //comment out if the database already exists
-            //using (var cxt = new EnrolmentDBContext())
-            //{
-            //    //create db if not exists
-            //    cxt.Database.EnsureCreated();
+            using (var cxt = new EnrolmentDBContext())
+            {
+                //create db if not exists
+                cxt.Database.EnsureCreated();
 
-            //    //create some sample data if the database is empty
-            //    var s1 = new Student { StudentID = "00123456", StudentName = "Alice Spring", DateEnroled = DateOnly.Parse("2023-01-01") };
-            //    var s2 = new Student { StudentID = "004567898", StudentName = "Bob Summer", DateEnroled = DateOnly.Parse("2023-02-01") };
+                //create some sample data if the database is empty
+                var s1 = new Student { StudentID = "00123456", StudentName = "Alice Spring", DateEnroled = DateOnly.Parse("2023-01-01") };
+                var s2 = new Student { StudentID = "004567898", StudentName = "Bob Summer", DateEnroled = DateOnly.Parse("2023-02-01") };
 
-            //    cxt.Students.Add(s1);
-            //    cxt.Students.Add(s2);
-            //    cxt.SaveChanges();
+                cxt.Students.Add(s1);
+                cxt.Students.Add(s2);
+                cxt.SaveChanges();
 
-            //    var c1 = new Course { CourseID = "C001", CourseName = "Introduction to Programming", Cost = 1000.00 };
-            //    var c2 = new Course { CourseID = "C002", CourseName = "Data Structures and Algorithms", Cost = 1200.00 };
-            //    cxt.Courses.Add(c1);
-            //    cxt.Courses.Add(c2);
-            //    cxt.SaveChanges();
+                var c1 = new Course { CourseID = "C001", CourseName = "Introduction to Programming", Cost = 1000.00 };
+                var c2 = new Course { CourseID = "C002", CourseName = "Data Structures and Algorithms", Cost = 1200.00 };
+                cxt.Courses.Add(c1);
+                cxt.Courses.Add(c2);
+                cxt.SaveChanges();
 
-            //    var e1 = new Enrolment { StudentID = s1.StudentID, CourseID = c1.CourseID, Grade = "A" };
-            //    var e2 = new Enrolment { StudentID = s2.StudentID, CourseID = c2.CourseID, Grade = "B" };
-            //    cxt.Enrolments.Add(e1);
-            //    cxt.Enrolments.Add(e2);
-            //    cxt.SaveChanges();
-            //}
+                var e1 = new Enrolment { StudentID = s1.StudentID, CourseID = c1.CourseID, Grade = "A" };
+                var e2 = new Enrolment { StudentID = s2.StudentID, CourseID = c2.CourseID, Grade = "B" };
+                cxt.Enrolments.Add(e1);
+                cxt.Enrolments.Add(e2);
+                cxt.SaveChanges();
+            }
         }
 
         // Get all students from the database
@@ -124,9 +124,11 @@ namespace EnrolmentSystem.Service
         // Add a new student to the database
         public static void AddStudent(Student s)
         {
+
             cxt.Database.EnsureCreated();
             cxt.Students.Add(s);
             cxt.SaveChanges();
+
         }
 
         // Add a new course to the database
